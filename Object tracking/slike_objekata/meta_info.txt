@@ -1,0 +1,17 @@
+position of 1st barrier: [157:175,42:50]
+            2nd barrier: [157:175,74:82]
+            3rd barrier: [157:175,106:114]
+
+bot position: [185:195, x1:x2] # x2-x1 = 7 example [185:195, 35:42]    #  34<= x1 <=116 ;   41<= x2 <=123
+
+missile:    nasa prelazi po 2 pixela po frejmu u proseku centar rakete, a vaznemaljska raketa  1 pixel po frejmu, 
+            moze biti duzine 8,9,6, 7, 10, 12, ?
+            nase rakete se vide na parnim frejmovima, a njiove na neparnim
+            kad je ispalimo raketa se nalazi iznad bota 
+            rgb value = [142,142,142]
+
+vanzemaljci:    rgb = [134, 134,  29] # zuti
+                primer pozicije:    [12:20, 10:17]
+
+ljubicasti:     pomera se za 1 pixel na 4 frejma
+                example postion: [12:20, 13:20]
