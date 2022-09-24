@@ -25,25 +25,29 @@ from time import sleep
 
 class Agent():
     def __init__(self, state_size, action_size, cold_start=True, episode_goal=0, current_episode =0):
-        self.weight_backup = "space_invaders_weight_batch_16_improved.h5"
-        self.parameters_backup = "space_invaders_parameters_batch_16_improved.json"
-        self.scores_backup = "scores_batch_16_improved.json"
-            
         self.current_episode = current_episode
         self.goal_episode = current_episode + episode_goal
         self.state_size = state_size
         self.action_size = action_size
         self.memory = deque(maxlen=10000)
-        self.learning_rate = 0.001
+        self.learning_rate = 0.0002
         self.gamma = 0.95
         self.exploration_rate = 1.0
         self.exploration_min = 0.01
         self.exploration_decay = 0.95
 
+        self.folder_path = "modeli/lr"+str(self.learning_rate)+"/"
+
+        self.weight_backup = "learning_rate_" + str(self.learning_rate) + "_weights.h5"
+        self.parameters_backup = "learning_rate_" + str(self.learning_rate) + "_parameters.json"
+        self.scores_backup = "learning_rate_" + str(self.learning_rate) + "_scores.json"
+        self.deque_backup = "learning_rate_" + str(self.learning_rate) + "_deque.json"
+
+
         self.current_network = self._build_model()
         if not cold_start:
-            net_to_load = "episode_goal_"+ str(current_episode) +"_" + self.weight_backup
-            parameters_to_load = "episode_goal_"+ str(current_episode) +"_" + self.parameters_backup
+            net_to_load = self.folder_path+"episode_goal_"+ str(current_episode) +"_" + self.weight_backup
+            parameters_to_load = self.folder_path+"episode_goal_"+ str(current_episode) +"_" + self.parameters_backup
             if os.path.isfile(net_to_load):
                 self.load_model(net_to_load)
                 self.load_parameters(parameters_to_load)
@@ -71,7 +75,7 @@ class Agent():
 
     def save_model(self, scores):
         """Saves the model weights to the path set in the object."""
-        net_to_save = "episode_goal_"+ str(self.current_episode) +"_" + self.weight_backup
+        net_to_save = self.folder_path+"episode_goal_"+ str(self.current_episode) +"_" + self.weight_backup
         self.current_network.save(net_to_save)
 
         if self.exploration_rate > self.exploration_min:
@@ -92,7 +96,7 @@ class Agent():
         fajl["exploration_min"] = self.exploration_min
         fajl["gamma"] = self.gamma
 
-        parameters_to_save = "episode_goal_"+ str(self.current_episode) +"_" + self.parameters_backup
+        parameters_to_save = self.folder_path+"episode_goal_"+ str(self.current_episode) +"_" + self.parameters_backup
 
         with open(parameters_to_save, "w") as f:
             json.dump(fajl, f)
@@ -107,7 +111,7 @@ class Agent():
         self.gamma = fajl["gamma"]
 
     def save_scores(self, scores):
-        scores_to_save = "episode_goal_"+ str(self.current_episode) +"_" + self.scores_backup
+        scores_to_save = self.folder_path+"episode_goal_"+ str(self.current_episode) +"_" + self.scores_backup
         with open(scores_to_save, "w") as f:
             json.dump(scores,f)
 
